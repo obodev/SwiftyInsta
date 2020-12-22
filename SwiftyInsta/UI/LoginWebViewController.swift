@@ -79,11 +79,15 @@ public class LoginWebViewController: UIViewController {
         WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
                                                 modifiedSince: .distantPast) { [weak self] in
                                                     self?.webView = LoginWebView(frame: self?.view.bounds ?? .zero) {
-                                                        UIView.animate(withDuration: TimeInterval(UINavigationController.hideShowBarDuration),
-                                                                       animations: { self?.webView?.alpha = 0 },
-                                                                       completion: { self?.webView?.isHidden = $0 })
-                                                        // start animating indicator.
-                                                        self?.indicator.startAnimating()
+                                                      self?.webView.evaluateJavaScript("document.documentElement.outerHTML.toString()",
+                                                                                 completionHandler: { (html: Any?, error: Error?) in
+                                                          print(html)
+                                                      })
+//                                                        UIView.animate(withDuration: TimeInterval(UINavigationController.hideShowBarDuration),
+//                                                                       animations: { self?.webView?.alpha = 0 },
+//                                                                       completion: { self?.webView?.isHidden = $0 })
+//                                                        // start animating indicator.
+//                                                        self?.indicator.startAnimating()
                                                     }
                                                     // authenticate.
                                                     DispatchQueue.main.asyncAfter(deadline: .now()) {
